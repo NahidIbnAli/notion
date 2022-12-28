@@ -1,3 +1,154 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Custom CSS */
+:root {
+  --_hue: 245;
+  --_size: 1.8rem;
+  --_radius: 0.2em;
+  --_tspeed_fast: 150ms;
+  --_tspeed_slow: 400ms;
+  --_ttype_squish: cubic-bezier(0.86, -0.1, 0.27, 1.15);
+
+  /* Light Mode */
+  --bg--light: var(--_hue) 30% 94%;
+  --txt--light: var(--_hue) 40% 5%;
+  --accent--light: var(--_hue) 55% 50%;
+  --muted--light: var(--_hue) 30% 99%;
+  /* Dark Mode */
+  --bg--dark: var(--_hue) 15% 10%;
+  --txt--dark: var(--_hue) 30% 88%;
+  --accent--dark: var(--_hue) 50% 50%;
+  --muted--dark: var(--_hue) 20% 4%;
+
+  --bg: var(--bg--light);
+  --txt: var(--txt--light);
+  --accent: var(--accent--light);
+  --muted: var(--muted--light);
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: var(--bg--dark);
+    --txt: var(--txt--dark);
+    --accent: var(--accent--dark);
+    --muted: var(--muted--dark);
+    color-scheme: dark;
+  }
+}
+
+/* prefers reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --_tspeed_slow: 50ms;
+    --_tspeed_fast: 50ms;
+  }
+}
+
+body {
+  min-height: 100vh;
+  background-color: hsl(var(--bg));
+  color: hsl(var(--txt));
+}
+
+::selection {
+  background: hsl(var(--accent) / 0.8);
+  color: hsl(var(--bg));
+}
+
+form {
+  font-size: var(--_size);
+  text-align: left;
+  padding-block: 0.5em;
+}
+
+.input-wrapper {
+  position: relative;
+  display: grid;
+  gap: 0.2em;
+  margin-block-start: 0.6em;
+}
+
+.form-label {
+  text-transform: uppercase;
+  font-size: 0.7em;
+  letter-spacing: 0.05em;
+  margin-inline: 0.45em;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 0 0.35em;
+  background-color: hsl(var(--muted));
+  transition: transform var(--_tspeed_fast) var(--_ttype_squish),
+    background-color var(--_tspeed_fast) var(--_ttype_squish);
+}
+
+.form-input {
+  border: none;
+  border-radius: var(--_radius);
+  padding: 0.35em 0.55em;
+  width: 100%;
+  background-color: hsl(var(--muted));
+  caret-color: hsl(var(--accent));
+  box-shadow: 0 0 0 -0.1em hsl(var(--bg)), 0 0 0 -0.2em hsl(var(--accent) / 0.8);
+  transition: box-shadow var(--_tspeed_slow) var(--_ttype_squish);
+}
+
+.form-input:focus {
+  outline: none;
+  box-shadow: 0 0 0 0.2em hsl(var(--bg)), 0 0 0 0.4em hsl(var(--accent) / 0.8);
+}
+
+.form-input:focus ~ .form-label,
+.form-input:not(:placeholder-shown) ~ .form-label {
+  transform: translate3d(0, -3.1em, 0);
+  background-color: hsl(var(--bg));
+  color: hsl(var(--accent) / 0.8);
+}
+
+.form-input::placeholder {
+  opacity: 0;
+}
+
+@media screen and (min-width: 600px) {
+  .md\:span-2 {
+    grid-column: 1 / span 2;
+  }
+}
+
+.btn {
+  background-color: hsl(var(--accent));
+  color: hsl(var(--bg));
+  text-decoration: none;
+  padding: 0.4em;
+  border-radius: var(--_radius);
+  box-shadow: 0.05em 0.1em 0.9em hsl(var(--accent) / 0.3),
+    0 0 0 -0.1em hsl(var(--bg)), 0 0 0 -0.2em hsl(var(--accent));
+  transition: box-shadow var(--_tspeed_slow) var(--_ttype_squish),
+    background-color var(--_tspeed_slow) var(--_ttype_squish);
+}
+
+.btn :where(svg, img, span) {
+  pointer-events: none;
+}
+
+.btn :where(svg, img) {
+  width: var(--_size);
+}
+
+.btn:where(:active, :hover) {
+  background-color: hsl(var(--accent) / 0.7);
+  box-shadow: 0 0 0 hsl(var(--accent) / 0.3), 0 0 0 -0.1em hsl(var(--bg)),
+    0 0 0 -0.2em hsl(var(--accent));
+}
+
+.btn:focus {
+  outline: none;
+}
+
+.btn:focus-visible {
+  box-shadow: 0 0 0 hsl(var(--accent) / 0.3), 0 0 0 0.2em hsl(var(--bg)),
+    0 0 0 0.4em hsl(var(--accent) / 0.7);
+}

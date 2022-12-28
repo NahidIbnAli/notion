@@ -10,11 +10,11 @@ const Navbar = () => {
       <NavLink to="/addtask" className="py-3 lg:py-0 lg:pr-9">
         Add Task
       </NavLink>
-      <hr className="border-none h-px bg-indigo-300" />
+      <hr />
       <NavLink to="/mytask" className="py-3 lg:py-0 lg:pr-9">
         My Task
       </NavLink>
-      <hr className="border-none h-px bg-indigo-300" />
+      <hr />
       <NavLink to="/completedtask" className="py-3 lg:py-0">
         Completed Task
       </NavLink>
@@ -22,7 +22,7 @@ const Navbar = () => {
   );
   return (
     <nav>
-      <div className="container max-w-screen-lg mx-auto flex justify-between items-center px-6 lg:px-10 xl:px-0 py-4">
+      <div className="container max-w-screen-lg mx-auto flex justify-between items-center px-6 py-4 lg:px-10 xl:px-0">
         <Link to="/" className="text-xl font-bold">
           Notion
         </Link>
@@ -39,7 +39,7 @@ const Navbar = () => {
           }`}
         >
           <div
-            className={`flex flex-col bg-indigo-400 text-indigo-50 backdrop-blur-md px-6 py-3 rounded-lg`}
+            className={`flex flex-col backdrop-blur-md px-6 py-3 rounded-lg shadow-xl`}
           >
             {navItems}
           </div>
