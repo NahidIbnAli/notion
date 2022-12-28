@@ -1,4 +1,7 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import CompletedTask from "./components/CompletedTask/CompletedTask";
+import MyTask from "./components/MyTask/MyTask";
+import NotFound from "./components/NotFound/NotFound";
 import Main from "./layout/Main";
 import Home from "./pages/Home";
 
@@ -12,7 +15,19 @@ function App() {
           path: "/",
           element: <Home></Home>,
         },
+        {
+          path: "/mytask",
+          element: <MyTask></MyTask>,
+        },
+        {
+          path: "/completedtask",
+          element: <CompletedTask></CompletedTask>,
+        },
       ],
+    },
+    {
+      path: "*",
+      element: <NotFound></NotFound>,
     },
   ]);
   return (

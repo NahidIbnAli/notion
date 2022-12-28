@@ -7,7 +7,7 @@ const Navbar = () => {
   const [toggleMenu, setToggleMenu] = useState(false);
   const navItems = (
     <>
-      <NavLink to="/addtask" className="py-3 lg:py-0 lg:pr-9">
+      <NavLink to="/" className="py-3 lg:py-0 lg:pr-9">
         Add Task
       </NavLink>
       <hr />
@@ -30,7 +30,7 @@ const Navbar = () => {
           onClick={() => setToggleMenu(!toggleMenu)}
           className="lg:hidden"
         >
-          <Bars3CenterLeftIcon className="w-7 h-7"></Bars3CenterLeftIcon>
+          <Bars3CenterLeftIcon className="w-8 h-8"></Bars3CenterLeftIcon>
         </button>
         <div className="hidden lg:flex">{navItems}</div>
         <div
@@ -39,6 +39,7 @@ const Navbar = () => {
           }`}
         >
           <div
+            onClick={() => setToggleMenu(!toggleMenu)}
             className={`flex flex-col backdrop-blur-md px-6 py-3 rounded-lg shadow-xl`}
           >
             {navItems}
