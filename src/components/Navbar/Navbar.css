@@ -1,0 +1,13 @@
+.active {
+  color: #6366f1;
+}
+
+.w-custom {
+  width: calc(100% - 48px);
+}
+
+@media screen and (min-width: 1024px) {
+  .w-custom {
+    width: auto;
+  }
+}
