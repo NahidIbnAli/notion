@@ -5,7 +5,7 @@
 /* Custom CSS */
 :root {
   --_hue: 245;
-  --_size: 1.5rem;
+  --_size: 1.4rem;
   --_radius: 0.2em;
   --_tspeed_fast: 150ms;
   --_tspeed_slow: 400ms;
@@ -16,16 +16,19 @@
   --txt--light: var(--_hue) 40% 5%;
   --accent--light: var(--_hue) 55% 50%;
   --muted--light: var(--_hue) 30% 99%;
+  --error--light: 10 55% 50%;
   /* Dark Mode */
   --bg--dark: var(--_hue) 15% 10%;
   --txt--dark: var(--_hue) 30% 88%;
   --accent--dark: var(--_hue) 50% 50%;
   --muted--dark: var(--_hue) 20% 4%;
+  --error--dark: 10 55% 50%;
 
   --bg: var(--bg--light);
   --txt: var(--txt--light);
   --accent: var(--accent--light);
   --muted: var(--muted--light);
+  --error: hsl(var(--error--light));
   color-scheme: light;
 }
 
@@ -35,6 +38,7 @@
     --txt: var(--txt--dark);
     --accent: var(--accent--dark);
     --muted: var(--muted--dark);
+    --error: hsl(var(--error--dark));
     color-scheme: dark;
   }
 }
@@ -62,9 +66,12 @@ body {
   font-size: var(--_size);
   text-align: left;
   padding-block: 0.5em;
+  width: 100%;
+  max-width: 390px;
 }
 
 .input-wrapper {
+  width: 100%;
   position: relative;
   display: grid;
   gap: 0.2em;
@@ -120,12 +127,14 @@ body {
 
 .btn,
 .customLabel,
-.signOutBtn {
+.signOutBtn,
+.updateBtn,
+.completeBtn {
   font-weight: 500;
   background-color: hsl(var(--accent));
   color: hsl(var(--bg));
   text-decoration: none;
-  padding: 0.4em 0.55em;
+  padding: 0.38em 0.55em;
   border-radius: var(--_radius);
   box-shadow: 0.05em 0.1em 0.9em hsl(var(--accent) / 0.3),
     0 0 0 -0.1em hsl(var(--bg)), 0 0 0 -0.2em hsl(var(--accent));
@@ -133,9 +142,24 @@ body {
     background-color var(--_tspeed_slow) var(--_ttype_squish);
 }
 
+.customLabel {
+  padding: 0.63em 0.5em;
+  width: 100%;
+}
+.customLabelWidth {
+  max-width: 390px;
+  width: 100%;
+  text-align: center;
+}
+
+.signOutBtn {
+  padding: 0.3em 0.8em;
+}
+
 .btn :where(svg, img, span),
 .customLabel :where(svg, img, span),
-.signOutBtn :where(svg, img, span) {
+.signOutBtn :where(svg, img, span),
+.threeBtn button :where(svg, img, span) {
   pointer-events: none;
 }
 
@@ -147,7 +171,9 @@ body {
 
 .btn:where(:active, :hover),
 .customLabel:where(:active, :hover),
-.signOutBtn:where(:active, :hover) {
+.signOutBtn:where(:active, :hover),
+.updateBtn:where(:active, :hover),
+.completeBtn:where(:active, :hover) {
   background-color: hsl(var(--accent) / 0.7);
   box-shadow: 0 0 0 hsl(var(--accent) / 0.3), 0 0 0 -0.1em hsl(var(--bg)),
     0 0 0 -0.2em hsl(var(--accent));
@@ -155,13 +181,16 @@ body {
 
 .btn:focus,
 .customLabel:focus,
-.signOutBtn:focus {
+.signOutBtn:focus,
+.threeBtn button:focus {
   outline: none;
 }
 
 .btn:focus-visible,
 .customLabel:focus-visible,
-.signOutBtn:focus-visible {
+.signOutBtn:focus-visible,
+.updateBtn:focus-visible,
+.completeBtn:focus-visible {
   box-shadow: 0 0 0 hsl(var(--accent) / 0.3), 0 0 0 0.2em hsl(var(--bg)),
     0 0 0 0.4em hsl(var(--accent) / 0.7);
 }
@@ -178,4 +207,36 @@ body {
 
 .customBorder {
   border: 0.1px solid hsl(var(--accent));
+}
+
+.customBorderTwo {
+  border: 0.2em solid hsl(var(--muted) / 0.8);
+}
+
+.threeBtn button {
+  color: hsl(var(--bg));
+  padding: 0.63em;
+  border-radius: var(--_radius);
+}
+
+.deleteBtn {
+  background-color: var(--error);
+  box-shadow: 0.05em 0.1em 0.9em hsl(var(--error--dark) / 0.3),
+    0 0 0 -0.1em hsl(var(--bg)), 0 0 0 -0.2em hsl(var(--error--dark));
+  transition: box-shadow var(--_tspeed_slow) var(--_ttype_squish),
+    background-color var(--_tspeed_slow) var(--_ttype_squish);
+}
+.deleteBtn:focus-visible {
+  box-shadow: 0 0 0 hsl(var(--error--dark) / 0.3), 0 0 0 0.2em hsl(var(--bg)),
+    0 0 0 0.4em hsl(var(--error--dark) / 0.7);
+}
+.deleteBtn:where(:active, :hover) {
+  background-color: hsl(var(--error--dark) / 0.7);
+  box-shadow: 0 0 0 hsl(var(--error--dark) / 0.3), 0 0 0 -0.1em hsl(var(--bg)),
+    0 0 0 -0.2em hsl(var(--error--dark));
+}
+
+.updateBtn,
+.completeBtn {
+  padding: 0.63em;
 }

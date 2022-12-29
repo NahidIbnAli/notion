@@ -1,9 +1,7 @@
 import React, { useContext, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
-import {
-  Bars3CenterLeftIcon,
-  ArrowRightOnRectangleIcon,
-} from "@heroicons/react/24/solid";
+import { Bars3CenterLeftIcon } from "@heroicons/react/24/solid";
+import { FiLogOut } from "react-icons/fi";
 import "./Navbar.css";
 import { AuthContext } from "../../contexts/AuthProvider";
 
@@ -31,8 +29,11 @@ const Navbar = () => {
         Completed Task
       </NavLink>
       {user?.uid ? (
-        <button className="signOutBtn" onClick={handleSignOut}>
-          <ArrowRightOnRectangleIcon className="w-5 h-5"></ArrowRightOnRectangleIcon>
+        <button
+          className="signOutBtn flex gap-x-1 items-center"
+          onClick={handleSignOut}
+        >
+          <span>Sign Out</span> <FiLogOut></FiLogOut>
         </button>
       ) : (
         <Link to="/login" className="signOutBtn">
@@ -61,7 +62,7 @@ const Navbar = () => {
         >
           <div
             onClick={() => setToggleMenu(!toggleMenu)}
-            className={`flex flex-col backdrop-blur-md px-6 py-3 rounded-lg shadow-xl`}
+            className={`flex flex-col backdrop-blur-md px-6 pt-3 pb-7 rounded-lg shadow-xl`}
           >
             {navItems}
           </div>

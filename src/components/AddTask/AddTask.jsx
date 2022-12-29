@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { PlusIcon, FolderArrowDownIcon } from "@heroicons/react/24/solid";
 import { useForm } from "react-hook-form";
 import Loader from "../Loader/Loader";
+import { AuthContext } from "../../contexts/AuthProvider";
 
 const AddTask = () => {
+  const { user, refetchTask } = useContext(AuthContext);
   const [btnLoading, setBtnLoading] = useState(false);
 
   const {
@@ -15,12 +17,12 @@ const AddTask = () => {
   //   imagebbHostKey
   const imageHostKey = process.env.REACT_APP_imgbb_key;
 
-  const handleAddTask = (data) => {
+  const handleAddTask = (data, event) => {
     setBtnLoading(true);
     const image = data.image[0];
     const formData = new FormData();
     formData.append("image", image);
-    console.log(image);
+    console.log(data.task, image, user.email);
     fetch(`https://api.imgbb.com/1/upload?key=${imageHostKey}`, {
       method: "POST",
       body: formData,
@@ -28,11 +30,24 @@ const AddTask = () => {
       .then((res) => res.json())
       .then((imageData) => {
         if (imageData.success) {
-          const task = {
-            taskText: data.task,
-            taskImage: imageData.data.url,
-          };
-          // fetch('')
+          fetch("http://localhost:5000/tasks", {
+            method: "POST",
+            headers: {
+              "content-type": "application/json",
+            },
+            body: JSON.stringify({
+              taskText: data.task,
+              taskImage: imageData.data.url,
+              email: user.email,
+            }),
+          })
+            .then((res) => res.json())
+            .then((data) => {
+              event.target.reset();
+              setBtnLoading(false);
+              refetchTask?.refetch();
+            })
+            .catch((error) => console.error(error));
         }
       });
     console.log(image);
@@ -57,10 +72,13 @@ const AddTask = () => {
             Enter Task
           </label>
         </div>
-        <div className="my-4">
+        {errors.task && (
+          <span className="text-red-600 text-base">{errors.task.message}</span>
+        )}
+        <div className="my-4 customLabelWidth">
           <label
             htmlFor="upload"
-            className="flex gap-x-1 items-center text-base px-4 py-2 cursor-pointer customLabel"
+            className="flex gap-x-1 justify-center items-center text-base cursor-pointer customLabel"
           >
             <FolderArrowDownIcon className="w-5 h-5"></FolderArrowDownIcon>
             <span>Upload Photo</span>
@@ -72,6 +90,11 @@ const AddTask = () => {
             className="hidden"
             placeholder="Upload Photo"
           />
+          {errors.image && (
+            <span className="text-red-600 text-base">
+              {errors.image.message}
+            </span>
+          )}
         </div>
 
         <button type="submit" className="btn md:span-2">
