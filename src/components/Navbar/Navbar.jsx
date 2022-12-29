@@ -1,10 +1,22 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
-import { Bars3CenterLeftIcon } from "@heroicons/react/24/solid";
+import {
+  Bars3CenterLeftIcon,
+  ArrowRightOnRectangleIcon,
+} from "@heroicons/react/24/solid";
 import "./Navbar.css";
+import { AuthContext } from "../../contexts/AuthProvider";
 
 const Navbar = () => {
+  const { user, logOut } = useContext(AuthContext);
   const [toggleMenu, setToggleMenu] = useState(false);
+
+  const handleSignOut = () => {
+    logOut()
+      .then(() => {})
+      .catch((error) => console.error(error));
+  };
+
   const navItems = (
     <>
       <NavLink to="/" className="py-3 lg:py-0 lg:pr-9">
@@ -15,9 +27,18 @@ const Navbar = () => {
         My Task
       </NavLink>
       <hr />
-      <NavLink to="/completedtask" className="py-3 lg:py-0">
+      <NavLink to="/completedtask" className="py-3 lg:py-0 lg:pr-9">
         Completed Task
       </NavLink>
+      {user?.uid ? (
+        <button className="signOutBtn" onClick={handleSignOut}>
+          <ArrowRightOnRectangleIcon className="w-5 h-5"></ArrowRightOnRectangleIcon>
+        </button>
+      ) : (
+        <Link to="/login" className="signOutBtn">
+          <button>Login</button>
+        </Link>
+      )}
     </>
   );
   return (
@@ -32,7 +53,7 @@ const Navbar = () => {
         >
           <Bars3CenterLeftIcon className="w-8 h-8"></Bars3CenterLeftIcon>
         </button>
-        <div className="hidden lg:flex">{navItems}</div>
+        <div className="hidden lg:flex items-center">{navItems}</div>
         <div
           className={`fixed top-16 z-10 lg:static duration-500 ease-in-out w-custom lg:hidden ${
             toggleMenu ? "translate-none" : "translate-x-[998px]"

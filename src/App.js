@@ -4,6 +4,8 @@ import MyTask from "./components/MyTask/MyTask";
 import NotFound from "./components/NotFound/NotFound";
 import Main from "./layout/Main";
 import Home from "./pages/Home";
+import Login from "./pages/Login";
+import SignUp from "./pages/SignUp";
 
 function App() {
   const router = createBrowserRouter([
@@ -22,6 +24,14 @@ function App() {
         {
           path: "/completedtask",
           element: <CompletedTask></CompletedTask>,
+        },
+        {
+          path: "/signup",
+          element: <SignUp></SignUp>,
+        },
+        {
+          path: "/login",
+          element: <Login></Login>,
         },
       ],
     },

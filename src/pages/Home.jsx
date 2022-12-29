@@ -1,5 +1,6 @@
 import React from "react";
 import AddTask from "../components/AddTask/AddTask";
+import CompletedTask from "../components/CompletedTask/CompletedTask";
 import MyTask from "../components/MyTask/MyTask";
 
 const Home = () => {
@@ -8,6 +9,7 @@ const Home = () => {
       <div className="max-w-screen-lg mx-auto">
         <AddTask></AddTask>
         <MyTask></MyTask>
+        <CompletedTask></CompletedTask>
       </div>
     </div>
   );
