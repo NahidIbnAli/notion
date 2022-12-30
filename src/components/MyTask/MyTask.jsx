@@ -9,11 +9,12 @@ import {
 import { AuthContext } from "../../contexts/AuthProvider";
 import axios from "axios";
 import UpdateTaskModal from "./UpdateTaskModal";
+import { useNavigate } from "react-router-dom";
 
 const MyTask = () => {
   const { user, setRefetchTask, refetchCompletedTask } =
     useContext(AuthContext);
-
+  const navigate = useNavigate();
   const [task, setTask] = useState(null);
 
   const closeModal = () => setTask(null);
@@ -55,6 +56,7 @@ const MyTask = () => {
       .then((response) => {
         refetch();
         refetchCompletedTask.refetch();
+        navigate("/completedtask");
       })
       .catch((error) => console.error(error));
   };

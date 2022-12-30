@@ -3,9 +3,13 @@ import { TrashIcon } from "@heroicons/react/24/outline";
 import { useQuery } from "@tanstack/react-query";
 import Loading from "../Loading/Loading";
 import { AuthContext } from "../../contexts/AuthProvider";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const CompletedTask = () => {
-  const { setRefetchCompletedTask, user } = useContext(AuthContext);
+  const { setRefetchCompletedTask, user, refetchTask } =
+    useContext(AuthContext);
+  const navigate = useNavigate();
   const {
     data: completedTasks = [],
     isLoading,
@@ -25,6 +29,28 @@ const CompletedTask = () => {
   if (isLoading) {
     return <Loading></Loading>;
   }
+
+  // delete task handler
+  const handleDeleteTask = (id) => {
+    axios
+      .delete(`http://localhost:5000/tasks/${id}`)
+      .then((response) => {
+        refetch();
+      })
+      .catch((error) => console.error(error));
+  };
+
+  // Not complete task handler
+  const handleNotCompleteTask = (id) => {
+    axios
+      .put(`http://localhost:5000/completedtasks?id=${id}`)
+      .then((response) => {
+        refetch();
+        refetchTask.refetch();
+        navigate("/mytask");
+      })
+      .catch((error) => console.error(error));
+  };
 
   return (
     <div className="grid place-items-center px-6 py-16">
@@ -47,9 +73,14 @@ const CompletedTask = () => {
                 <p className="text-lg font-medium">{task?.taskText}</p>
               </div>
               <div className="flex justify-center items-center gap-4 threeBtn pt-6 md:pt-0">
-                <button className="updateBtn">Not Completed</button>
                 <button
-                  // onClick={() => handleDeleteTask(task?._id)}
+                  onClick={() => handleNotCompleteTask(task?._id)}
+                  className="updateBtn"
+                >
+                  Not Completed
+                </button>
+                <button
+                  onClick={() => handleDeleteTask(task?._id)}
                   className="deleteBtn"
                 >
                   <TrashIcon className="w-7 h-7"></TrashIcon>
