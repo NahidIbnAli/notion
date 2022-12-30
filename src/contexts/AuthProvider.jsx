@@ -19,6 +19,7 @@ const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [refetchTask, setRefetchTask] = useState({});
+  const [refetchCompletedTask, setRefetchCompletedTask] = useState({});
 
   //   auth provider
   const googleProvider = new GoogleAuthProvider();
@@ -61,6 +62,8 @@ const AuthProvider = ({ children }) => {
     loading,
     refetchTask,
     setRefetchTask,
+    refetchCompletedTask,
+    setRefetchCompletedTask,
   };
 
   return (

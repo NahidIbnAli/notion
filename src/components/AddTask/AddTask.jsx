@@ -38,6 +38,7 @@ const AddTask = () => {
               taskText: data.task,
               taskImage: imageData.data.url,
               email: user.email,
+              completed: false,
             }),
           })
             .then((res) => res.json())

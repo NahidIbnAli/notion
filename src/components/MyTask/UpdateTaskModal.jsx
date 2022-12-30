@@ -18,7 +18,7 @@ const UpdateTaskModal = ({ closeModal, task, refetch }) => {
   const handleUpdateTask = (data) => {
     setUpdateBtnLoading(true);
     axios
-      .put(`http://localhost:5000/tasks/${task?.id}`, {
+      .patch(`http://localhost:5000/tasks/${task?.id}`, {
         updateTaskText: data?.updateTask,
       })
       .then((response) => {

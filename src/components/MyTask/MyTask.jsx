@@ -11,7 +11,8 @@ import axios from "axios";
 import UpdateTaskModal from "./UpdateTaskModal";
 
 const MyTask = () => {
-  const { user, setRefetchTask } = useContext(AuthContext);
+  const { user, setRefetchTask, refetchCompletedTask } =
+    useContext(AuthContext);
 
   const [task, setTask] = useState(null);
 
@@ -24,7 +25,9 @@ const MyTask = () => {
   } = useQuery({
     queryKey: ["tasks", user?.email],
     queryFn: async () => {
-      const res = await fetch(`http://localhost:5000/tasks/${user?.email}`);
+      const res = await fetch(
+        `http://localhost:5000/tasks?completed=false&email=${user?.email}`
+      );
       const data = await res.json();
       setRefetchTask({ refetch });
       return data;
@@ -45,10 +48,23 @@ const MyTask = () => {
       .catch((error) => console.error(error));
   };
 
+  // complete task handler
+  const handleCompleteTask = (id) => {
+    axios
+      .put(`http://localhost:5000/tasks?id=${id}`)
+      .then((response) => {
+        refetch();
+        refetchCompletedTask.refetch();
+      })
+      .catch((error) => console.error(error));
+  };
+
   return (
-    <div className="grid place-items-center px-6 py-16">
+    <div className="grid place-items-center px-6 pt-16 pb-5">
       <div className="max-w-screen-md w-full mx-auto">
-        <h2 className="text-4xl font-bold text-center">My Task List</h2>
+        {tasks.length > 0 && (
+          <h2 className="text-4xl font-bold text-center">My Task List</h2>
+        )}
         <ul className="grid gap-7 pt-14">
           {tasks.map((task) => (
             <li
@@ -64,7 +80,10 @@ const MyTask = () => {
                 <p className="text-lg font-medium">{task?.taskText}</p>
               </div>
               <div className="flex justify-center items-center gap-4 threeBtn pt-6 md:pt-0">
-                <button className="completeBtn">
+                <button
+                  onClick={() => handleCompleteTask(task?._id)}
+                  className="completeBtn"
+                >
                   <ClipboardDocumentCheckIcon className="w-7 h-7"></ClipboardDocumentCheckIcon>
                 </button>
                 <button
