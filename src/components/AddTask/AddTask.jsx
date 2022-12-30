@@ -22,7 +22,6 @@ const AddTask = () => {
     const image = data.image[0];
     const formData = new FormData();
     formData.append("image", image);
-    console.log(data.task, image, user.email);
     fetch(`https://api.imgbb.com/1/upload?key=${imageHostKey}`, {
       method: "POST",
       body: formData,
@@ -50,10 +49,10 @@ const AddTask = () => {
             .catch((error) => console.error(error));
         }
       });
-    console.log(image);
   };
+
   return (
-    <div className="grid place-items-center pt-24">
+    <div className="grid place-items-center px-6 pt-24">
       <form
         onSubmit={handleSubmit(handleAddTask)}
         className="flex flex-col gap-y-2 items-center form"

@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import Loading from "../Loading/Loading";
 import {
   TrashIcon,
@@ -7,9 +7,16 @@ import {
   PencilSquareIcon,
 } from "@heroicons/react/24/outline";
 import { AuthContext } from "../../contexts/AuthProvider";
+import axios from "axios";
+import UpdateTaskModal from "./UpdateTaskModal";
 
 const MyTask = () => {
   const { user, setRefetchTask } = useContext(AuthContext);
+
+  const [task, setTask] = useState(null);
+
+  const closeModal = () => setTask(null);
+
   const {
     data: tasks = [],
     isLoading,
@@ -28,12 +35,11 @@ const MyTask = () => {
     return <Loading></Loading>;
   }
 
+  // delete task handler
   const handleDeleteTask = (id) => {
-    fetch(`http://localhost:5000/tasks/${id}`, {
-      method: "DELETE",
-    })
-      .then((res) => res.json())
-      .then((data) => {
+    axios
+      .delete(`http://localhost:5000/tasks/${id}`)
+      .then((response) => {
         refetch();
       })
       .catch((error) => console.error(error));
@@ -61,7 +67,12 @@ const MyTask = () => {
                 <button className="completeBtn">
                   <ClipboardDocumentCheckIcon className="w-7 h-7"></ClipboardDocumentCheckIcon>
                 </button>
-                <button className="updateBtn">
+                <button
+                  onClick={() =>
+                    setTask({ id: task?._id, taskText: task?.taskText })
+                  }
+                  className="updateBtn"
+                >
                   <PencilSquareIcon className="w-7 h-7"></PencilSquareIcon>
                 </button>
                 <button
@@ -75,6 +86,13 @@ const MyTask = () => {
           ))}
         </ul>
       </div>
+      {task && (
+        <UpdateTaskModal
+          closeModal={closeModal}
+          task={task}
+          refetch={refetch}
+        ></UpdateTaskModal>
+      )}
     </div>
   );
 };
