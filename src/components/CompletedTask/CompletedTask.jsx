@@ -18,7 +18,7 @@ const CompletedTask = () => {
     queryKey: ["completedTasks", user?.email],
     queryFn: async () => {
       const res = await fetch(
-        `http://localhost:5000/completedtasks?completed=true&email=${user?.email}`
+        `https://notion-server-nine.vercel.app/completedtasks?completed=true&email=${user?.email}`
       );
       const data = await res.json();
       setRefetchCompletedTask({ refetch });
@@ -33,7 +33,7 @@ const CompletedTask = () => {
   // delete task handler
   const handleDeleteTask = (id) => {
     axios
-      .delete(`http://localhost:5000/tasks/${id}`)
+      .delete(`https://notion-server-nine.vercel.app/tasks/${id}`)
       .then((response) => {
         refetch();
       })
@@ -43,7 +43,7 @@ const CompletedTask = () => {
   // Not complete task handler
   const handleNotCompleteTask = (id) => {
     axios
-      .put(`http://localhost:5000/completedtasks?id=${id}`)
+      .put(`https://notion-server-nine.vercel.app/completedtasks?id=${id}`)
       .then((response) => {
         refetch();
         refetchTask.refetch();

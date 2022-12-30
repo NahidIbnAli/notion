@@ -32,7 +32,7 @@ const AddTask = () => {
         .then((res) => res.json())
         .then((imageData) => {
           if (imageData.success) {
-            fetch("http://localhost:5000/tasks", {
+            fetch("https://notion-server-nine.vercel.app/tasks", {
               method: "POST",
               headers: {
                 "content-type": "application/json",

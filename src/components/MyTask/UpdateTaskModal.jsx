@@ -18,7 +18,7 @@ const UpdateTaskModal = ({ closeModal, task, refetch }) => {
   const handleUpdateTask = (data) => {
     setUpdateBtnLoading(true);
     axios
-      .patch(`http://localhost:5000/tasks/${task?.id}`, {
+      .patch(`https://notion-server-nine.vercel.app/tasks/${task?.id}`, {
         updateTaskText: data?.updateTask,
       })
       .then((response) => {
