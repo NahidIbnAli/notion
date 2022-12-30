@@ -7,6 +7,7 @@ import Main from "./layout/Main";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
+import PrivateRoute from "./PrivateRoute/PrivateRoute";
 
 function App() {
   const router = createBrowserRouter([
@@ -20,11 +21,19 @@ function App() {
         },
         {
           path: "/mytask",
-          element: <MyTask></MyTask>,
+          element: (
+            <PrivateRoute>
+              <MyTask></MyTask>
+            </PrivateRoute>
+          ),
         },
         {
           path: "/completedtask",
-          element: <CompletedTask></CompletedTask>,
+          element: (
+            <PrivateRoute>
+              <CompletedTask></CompletedTask>
+            </PrivateRoute>
+          ),
         },
         {
           path: "/signup",

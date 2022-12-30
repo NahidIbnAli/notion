@@ -3,10 +3,12 @@ import { PlusIcon, FolderArrowDownIcon } from "@heroicons/react/24/solid";
 import { useForm } from "react-hook-form";
 import Loader from "../Loader/Loader";
 import { AuthContext } from "../../contexts/AuthProvider";
+import LoginModal from "./LoginModal";
 
 const AddTask = () => {
   const { user, refetchTask } = useContext(AuthContext);
   const [btnLoading, setBtnLoading] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   const {
     register,
@@ -18,38 +20,42 @@ const AddTask = () => {
   const imageHostKey = process.env.REACT_APP_imgbb_key;
 
   const handleAddTask = (data, event) => {
-    setBtnLoading(true);
-    const image = data.image[0];
-    const formData = new FormData();
-    formData.append("image", image);
-    fetch(`https://api.imgbb.com/1/upload?key=${imageHostKey}`, {
-      method: "POST",
-      body: formData,
-    })
-      .then((res) => res.json())
-      .then((imageData) => {
-        if (imageData.success) {
-          fetch("http://localhost:5000/tasks", {
-            method: "POST",
-            headers: {
-              "content-type": "application/json",
-            },
-            body: JSON.stringify({
-              taskText: data.task,
-              taskImage: imageData.data.url,
-              email: user.email,
-              completed: false,
-            }),
-          })
-            .then((res) => res.json())
-            .then((data) => {
-              event.target.reset();
-              setBtnLoading(false);
-              refetchTask?.refetch();
+    if (user?.email) {
+      setBtnLoading(true);
+      const image = data.image[0];
+      const formData = new FormData();
+      formData.append("image", image);
+      fetch(`https://api.imgbb.com/1/upload?key=${imageHostKey}`, {
+        method: "POST",
+        body: formData,
+      })
+        .then((res) => res.json())
+        .then((imageData) => {
+          if (imageData.success) {
+            fetch("http://localhost:5000/tasks", {
+              method: "POST",
+              headers: {
+                "content-type": "application/json",
+              },
+              body: JSON.stringify({
+                taskText: data.task,
+                taskImage: imageData.data.url,
+                email: user.email,
+                completed: false,
+              }),
             })
-            .catch((error) => console.error(error));
-        }
-      });
+              .then((res) => res.json())
+              .then((data) => {
+                event.target.reset();
+                setBtnLoading(false);
+                refetchTask?.refetch();
+              })
+              .catch((error) => console.error(error));
+          }
+        });
+    } else {
+      setIsOpen(true);
+    }
   };
 
   return (
@@ -105,6 +111,9 @@ const AddTask = () => {
           )}
         </button>
       </form>
+      {!user?.email && (
+        <LoginModal isOpen={isOpen} setIsOpen={setIsOpen}></LoginModal>
+      )}
     </div>
   );
 };

@@ -248,3 +248,7 @@ body {
   caret-color: hsl(var(--accent));
   background-color: hsl(var(--muted));
 }
+
+.customBg {
+  background-color: hsl(var(--muted));
+}
