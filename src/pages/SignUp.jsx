@@ -27,6 +27,7 @@ const SignUp = () => {
           .then(() => {
             saveUser(data.name, data.email);
             event.target.reset();
+            toast.success("User Created Successfully");
           })
           .catch((error) => {
             setSignUpLoading(false);
@@ -42,18 +43,16 @@ const SignUp = () => {
   };
 
   const saveUser = (name, email) => {
-    const user = { name, email };
-    fetch("https://ebay-cars-server.vercel.app/users", {
+    fetch("http://localhost:5000/users", {
       method: "POST",
       headers: {
         "content-type": "application/json",
       },
-      body: JSON.stringify(user),
+      body: JSON.stringify({ name, email }),
     })
       .then((res) => res.json())
       .then((data) => {
         setSignUpLoading(false);
-        toast.success("User Created Successfully");
         navigate("/");
       })
       .catch((error) => {
@@ -138,7 +137,7 @@ const SignUp = () => {
             Login
           </Link>
         </p>
-        <h5 className="text-center my-3">OR</h5>
+        <h5 className="text-center">OR</h5>
         <button
           onClick={handleSignInWithGoogle}
           className="btn btn-outline w-full mt-2"

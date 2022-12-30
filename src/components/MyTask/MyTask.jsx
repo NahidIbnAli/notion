@@ -9,15 +9,15 @@ import {
 import { AuthContext } from "../../contexts/AuthProvider";
 
 const MyTask = () => {
-  const { setRefetchTask } = useContext(AuthContext);
+  const { user, setRefetchTask } = useContext(AuthContext);
   const {
     data: tasks = [],
     isLoading,
     refetch,
   } = useQuery({
-    queryKey: ["tasks"],
+    queryKey: ["tasks", user?.email],
     queryFn: async () => {
-      const res = await fetch("http://localhost:5000/tasks");
+      const res = await fetch(`http://localhost:5000/tasks/${user?.email}`);
       const data = await res.json();
       setRefetchTask({ refetch });
       return data;
@@ -28,8 +28,19 @@ const MyTask = () => {
     return <Loading></Loading>;
   }
 
+  const handleDeleteTask = (id) => {
+    fetch(`http://localhost:5000/tasks/${id}`, {
+      method: "DELETE",
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        refetch();
+      })
+      .catch((error) => console.error(error));
+  };
+
   return (
-    <div className="grid place-items-center py-16">
+    <div className="grid place-items-center px-6 py-16">
       <div className="max-w-screen-md w-full mx-auto">
         <h2 className="text-4xl font-bold text-center">My Task List</h2>
         <ul className="grid gap-7 pt-14">
@@ -53,7 +64,10 @@ const MyTask = () => {
                 <button className="updateBtn">
                   <PencilSquareIcon className="w-7 h-7"></PencilSquareIcon>
                 </button>
-                <button className="deleteBtn">
+                <button
+                  onClick={() => handleDeleteTask(task?._id)}
+                  className="deleteBtn"
+                >
                   <TrashIcon className="w-7 h-7"></TrashIcon>
                 </button>
               </div>
